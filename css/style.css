@@ -129,18 +129,19 @@ img {
 	float: left;
 }
 
-.item {
+.js .item {
 	opacity: 0;
 	visibility: hidden;
-	height: 0;
 	transform: translate3d(-50px,0,0);
+	position: absolute;
+	top: 0;
 }
 
-.item.active {
+.js .item.active {
 	opacity: 1;
 	visibility: visible;
-	height: auto;
 	transition: .3s;
+	position: relative;
+	top: auto;
 	transform: translate3d(0px,0,0);
-	
 }
