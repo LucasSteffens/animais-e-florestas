@@ -325,5 +325,16 @@ p {
 .slide > .active {
 	position: relative;
 	opacity: 1;
+}
 
+[data-anime] {
+	opacity: 0;
+	transform: translate3d(0,-50px, 0);
+	transition: .3s
+	;
+}
+
+[data-anime].animate {
+	opacity: 1;
+	transform: translate3d(0,0,0);
 }
