@@ -92,18 +92,30 @@ $('.mobile-btn').click(function(){
     $('.mobile-menu').toggleClass('active');
 });
 
-$('.slide > :first').addClass('active');
 
-function rotateSlide() {
-    var activeSlide = $('.slide > .active'),
-        nextSlide = activeSlide.next();
+function slider(sliderName) {
+    var sliderClass = '.' + sliderName,
+        activeClass = 'active',
+        rotate = setInterval(rotateSlide, 2000);
 
-    if(nextSlide.length == 0) {
-        nextSlide = $('.slide > :first');
+    $(sliderClass + '> :first').addClass(activeClass);
+
+    $(sliderClass).hover(function(){
+        clearInterval(rotate);
+    }, function(){
+        rotate = setInterval(rotateSlide, 2000);
+    });
+
+    function rotateSlide() {
+        var activeSlide = $(sliderClass + ' > .' + activeClass),
+            nextSlide = activeSlide.next();
+
+        if(nextSlide.length == 0) {
+            nextSlide = $(sliderClass + ' > :first');
+        }
+        activeSlide.removeClass(activeClass);
+        nextSlide.addClass(activeClass);
     }
-    activeSlide.removeClass('active');
-    nextSlide.addClass('active');
 }
 
-setInterval(rotateSlide, 2000);
-
+slider('introducao');
