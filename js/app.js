@@ -1,3 +1,19 @@
+// Debounce do Lodash
+debounce = function(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+
 // $(document).ready(function(){
 //     var classActive = 'active';
 
@@ -27,6 +43,7 @@
 // })
 // Codigo Otimizado abaixo:
 
+// Muda tab ao Click
 $('[data-group]').each(function(){
     var allTarget = $(this).find('[data-target]'),
         allClick = $(this).find('[data-click]'),
@@ -49,6 +66,7 @@ $('[data-group]').each(function(){
     });
 });
 
+// Scroll suave para link externo
 $('.menu-nav a[href^="#"]').click(function(e){
     e.preventDefault();
 
@@ -62,6 +80,7 @@ $('.menu-nav a[href^="#"]').click(function(e){
     },500);
 });
 
+//Scroll suave para o Topo
 $('.logo').click(function(e){
     e.preventDefault();
 
@@ -70,6 +89,7 @@ $('.logo').click(function(e){
 }, 500);
 });
 
+//Mudar para active o menu de acordo com a area
 $('section').each(function(){
     var height = $(this).height(),
         offsetTop = $(this).offset().top,
@@ -77,22 +97,24 @@ $('section').each(function(){
         id = $(this).attr('id'),
         itemMenu = $('a[href="#' + id + '"]');
 
-    $(window).scroll(function(){
+    $(window).scroll(debounce(function(){
         var scrollTop = $(window).scrollTop();
         if(offsetTop - menuHeight < scrollTop && offsetTop + height - menuHeight > scrollTop) {
             itemMenu.addClass('active');
         } else {
             itemMenu.removeClass('active');
         }
-    });
+    }, 200));
 });
 
+//Botão menu do mobile
 $('.mobile-btn').click(function(){
     $(this).toggleClass('active');
     $('.mobile-menu').toggleClass('active');
 });
 
-
+// Slider
+(function(){
 function slider(sliderName) {
     var sliderClass = '.' + sliderName,
         activeClass = 'active',
@@ -119,7 +141,10 @@ function slider(sliderName) {
 }
 
 slider('introducao');
+})();
 
+// Animação ao Scroll.
+(function(){
 var target = $('[data-anime="scroll"]'),
     animationClass = 'animate',
     offset = $(window).height() * 3/4;
@@ -138,6 +163,7 @@ function animeScroll() {
 
 animeScroll();
 
-$(document).scroll(function(){
+$(document).scroll(debounce(function(){
     animeScroll();
-});
+}, 200));
+})();
